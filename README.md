@@ -1,1 +1,1 @@
-# Azure PpenAI Advanced class
+# Azure OpenAI Advanced class
