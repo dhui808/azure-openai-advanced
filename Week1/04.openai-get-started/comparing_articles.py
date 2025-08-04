@@ -3,7 +3,13 @@ import numpy as np
 import os
 from openai import AzureOpenAI
 from dotenv import load_dotenv
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+
 load_dotenv()
+
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+)
 
 model="text-embedding-3-small"
 def cosine_similarity(query_embedding, embeddings, distance_metric='cosine'):
@@ -30,8 +36,8 @@ cnn_df = pd.DataFrame({"articles":cnn_daily_articles, "highligths":cnn_daily_art
 print(cnn_df.head())   
 
 client = AzureOpenAI(
-  azure_endpoint = "https://abc.cognitiveservices.azure.com/", 
-  api_key="my_key",  
+  azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT"), 
+  azure_ad_token_provider=token_provider,
   api_version="2024-12-01-preview"
 )
 
